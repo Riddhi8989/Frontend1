@@ -7,7 +7,7 @@
 
 	onMount(async () => {
 		try {
-			const res = await axios.get('http://127.0.0.1:5000/ai-stories');
+			const res = await axios.get('https://backend1-vwd5.onrender.com/ai-stories');
 			stories = res.data.stories;
 		} catch (err) {
 			console.error('Error loading stories:', err);

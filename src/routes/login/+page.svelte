@@ -10,7 +10,7 @@
 	const handleLogin = async () => {
 		error = '';
 		try {
-			const res = await axios.post('http://127.0.0.1:5000/login', {
+			const res = await axios.post('https://backend1-vwd5.onrender.com/login', {
 				email: email.toLowerCase(),
 				password
 			});

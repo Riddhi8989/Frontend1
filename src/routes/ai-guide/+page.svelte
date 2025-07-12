@@ -14,7 +14,7 @@
 		answer = '';
 
 		try {
-			const res = await axios.post('http://127.0.0.1:5000/ai-guide', { prompt });
+			const res = await axios.post('https://backend1-vwd5.onrender.com/ai-guide', { prompt });
 			answer = res.data.answer || 'No answer received.';
 		} catch (err) {
 			console.error('AI Guide Error:', err);
