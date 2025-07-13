@@ -18,7 +18,7 @@
 				return;
 			}
 
-			const res = await API.get(`/profile?email=${savedUser.email}`);
+			const res = await API.fetchProfile(savedUser.email); // ✅ Correct API call
 			profile = res.data;
 		} catch (err) {
 			error = err?.response?.data?.error || 'Failed to load profile.';
@@ -39,7 +39,7 @@
 
 	const saveChanges = async () => {
 		try {
-			const res = await API.put('/profile', {
+			const res = await API.putProfile('/profile', {
 				email: profile.email,
 				name: editName,
 				bio: editBio

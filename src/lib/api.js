@@ -1,7 +1,6 @@
-// src/lib/api.js
 import axios from 'axios';
 
-const API_BASE =  'https://backend1-vwd5.onrender.com'
+const API_BASE = 'https://backend1-vwd5.onrender.com';
 
 // 🔐 Auth headers
 function getAuthHeaders() {
@@ -36,14 +35,21 @@ export async function fetchAiCareers() {
 
 // 👤 Profile
 export async function fetchProfile(email) {
-	return axios.get(`${API_BASE}/me?email=${email}`);
+	return axios.get(`${API_BASE}/profile`, {
+		params: { email }
+	});
 }
 
-// ✅ Default export (optional)
+export async function putProfile(data) {
+	return axios.put(`${API_BASE}/profile`, data);
+}
+
+// ✅ Default export
 export default {
 	login,
 	register,
 	fetchAiStories,
 	fetchAiCareers,
-	fetchProfile
+	fetchProfile,
+	putProfile
 };
