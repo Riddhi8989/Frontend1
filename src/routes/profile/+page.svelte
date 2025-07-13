@@ -10,7 +10,7 @@
 	onMount(async () => {
 		try {
 			const bootstrap = await import('bootstrap/dist/js/bootstrap.bundle.min.js');
-			window.bootstrap = bootstrap; // ✅ allow modal to work
+			window.bootstrap = bootstrap;
 
 			const savedUser = JSON.parse(localStorage.getItem('user'));
 			if (!savedUser?.email) {
@@ -18,7 +18,7 @@
 				return;
 			}
 
-			const res = await API.fetchProfile(savedUser.email); // ✅ Correct API call
+			const res = await API.fetchProfile(savedUser.email);
 			profile = res.data;
 		} catch (err) {
 			error = err?.response?.data?.error || 'Failed to load profile.';
@@ -39,7 +39,7 @@
 
 	const saveChanges = async () => {
 		try {
-			const res = await API.putProfile('/profile', {
+			const res = await API.putProfile({
 				email: profile.email,
 				name: editName,
 				bio: editBio
