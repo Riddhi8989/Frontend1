@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { fetchCareerPaths } from '$lib/api.js'; // ✅ correct
+	import { fetchCareerPaths } from '$lib/api.js';
 	import { user } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
@@ -21,12 +21,9 @@
 		careers = [];
 
 		try {
-			const res = await API.post('/ai-careers', {
-				keyword: keyword || field
-			});
-
-			if (Array.isArray(res.data.careers) && res.data.careers.length > 0) {
-				careers = res.data.careers;
+			const data = await fetchCareerPaths(keyword || field);
+			if (Array.isArray(data) && data.length > 0) {
+				careers = data;
 			} else {
 				error = 'No valid career suggestions received from AI.';
 			}
@@ -47,17 +44,27 @@
 				return;
 			}
 
-			await API.post('/save-career', {
-				email: u.email,
-				title: career.title,
-				description: career.description,
-				steps: career.steps,
-				pitfalls: career.pitfalls,
-				resources: career.resources
+			const res = await fetch('https://backend1-vwd5.onrender.com/save-career', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email: u.email,
+					title: career.title,
+					description: career.description,
+					steps: career.steps,
+					pitfalls: career.pitfalls,
+					resources: career.resources
+				})
 			});
 
-			alert('🎉 Career saved successfully!');
-			goto('/dashboard');
+			if (res.ok) {
+				alert('🎉 Career saved successfully!');
+				goto('/dashboard');
+			} else {
+				throw new Error('Failed to save');
+			}
 		} catch (err) {
 			console.error('Save Career Error:', err);
 			alert('❌ Error saving career to your profile.');

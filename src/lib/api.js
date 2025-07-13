@@ -61,12 +61,15 @@ export async function fetchAICareers(keyword = "technology") {
     });
 
     const data = await res.json();
-    return data;
+    return data.careers || [];
   } catch (err) {
     console.error('❌ fetchAICareers error:', err);
     return [];
   }
 }
+
+// Alias for consistency with frontend usage
+export const fetchCareerPaths = fetchAICareers;
 
 // === Failure Stories ===
 export async function fetchFailureStories() {
