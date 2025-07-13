@@ -61,15 +61,12 @@ export async function fetchAICareers(keyword = "technology") {
     });
 
     const data = await res.json();
-    return data.careers || [];
+    return data;
   } catch (err) {
     console.error('❌ fetchAICareers error:', err);
     return [];
   }
 }
-
-// Alias for consistency with frontend usage
-export const fetchCareerPaths = fetchAICareers;
 
 // === Failure Stories ===
 export async function fetchFailureStories() {
@@ -99,3 +96,28 @@ export async function fetchCareerDetails(title) {
     return null;
   }
 }
+
+// === Career Paths ===
+export async function fetchCareerPaths() {
+  try {
+    const res = await fetch(`${BASE_URL}/career-paths`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('❌ fetchCareerPaths error:', err);
+    return [];
+  }
+}
+
+// ✅ Default Export: Object containing all API functions
+const API = {
+  fetchAIGuidance,
+  fetchAIQuote,
+  fetchAICareerGuide,
+  fetchAICareers,
+  fetchCareerPaths,
+  fetchFailureStories,
+  fetchCareerDetails
+};
+
+export default API;
