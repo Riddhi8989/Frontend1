@@ -10,7 +10,7 @@
 	let quote = '';
 	let error = '';
 
-	const API_BASE = 'https://failed-2.onrender.com';
+	const API_BASE = 'https://backend1-vwd5.onrender.com';
 
 	$user;
 
@@ -25,7 +25,7 @@
 
 		try {
 			const res = await axios.get(`${API_BASE}/me?email=${email}`);
-			profile = res.data.user;
+			profile = res.data;
 
 			if (profile?.career_title) {
 				career = {
