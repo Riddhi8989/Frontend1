@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import API from '$lib/api';
+	import { fetchUser, fetchProfile, putProfile } from '$lib/api'; // ✅ named imports
 
 	let profile = null;
 	let error = '';
@@ -18,7 +18,7 @@
 				return;
 			}
 
-			const res = await API.fetchProfile(savedUser.email);
+			const res = await fetchProfile(savedUser.email); // ✅ fetchProfile instead of API.fetchProfile
 			profile = res.data;
 		} catch (err) {
 			error = err?.response?.data?.error || 'Failed to load profile.';
@@ -39,7 +39,7 @@
 
 	const saveChanges = async () => {
 		try {
-			const res = await API.putProfile({
+			const res = await putProfile({
 				email: profile.email,
 				name: editName,
 				bio: editBio
@@ -54,6 +54,7 @@
 		}
 	};
 </script>
+
 
 <svelte:head>
 	<title>My Profile</title>

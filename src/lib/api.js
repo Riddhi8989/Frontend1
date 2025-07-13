@@ -1,5 +1,3 @@
-// src/lib/api.js
-
 const BASE_URL = 'https://backend1-vwd5.onrender.com';
 
 export async function signup(data) {
@@ -39,7 +37,6 @@ export async function fetchCareerPaths(keyword) {
 	}
 }
 
-// ✅ This is the function expected in dashboard/+page.svelte
 export async function fetchAICareers(keyword) {
 	try {
 		const res = await fetch(`${BASE_URL}/ai-career?keyword=${encodeURIComponent(keyword)}`);
@@ -47,9 +44,24 @@ export async function fetchAICareers(keyword) {
 		return await res.json();
 	} catch (err) {
 		console.error('AI Career Fetch Error:', err);
-		return { careers: [] }; // Return empty structure for dashboard compatibility
+		return { careers: [] };
 	}
 }
 
-// Optional: Export BASE_URL if needed elsewhere
+export async function fetchProfile(email) {
+	const res = await fetch(`${BASE_URL}/user?email=${encodeURIComponent(email)}`);
+	if (!res.ok) throw new Error('Profile fetch failed');
+	return res.json();
+}
+
+export async function putProfile(data) {
+	const res = await fetch(`${BASE_URL}/update-profile`, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
+	});
+	if (!res.ok) throw new Error('Profile update failed');
+	return res.json();
+}
+
 export { BASE_URL };
