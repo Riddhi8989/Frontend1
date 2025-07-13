@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import API from '$lib/api';
+	import { fetchCareerPaths } from '$lib/api.js'; // ✅ correct
 	import { user } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
