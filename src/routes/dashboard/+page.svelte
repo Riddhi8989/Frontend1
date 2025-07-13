@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import API from '$lib/api.js'; // ✅ using default import
+	import { fetchAICareers } from '$lib/api.js'; // ✅ named import
 	import { user } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
@@ -21,7 +21,7 @@
 		careers = [];
 
 		try {
-			const res = await API.fetchAICareers(keyword || field); // ✅ consistent call
+			const res = await fetchAICareers(keyword || field);
 			if (Array.isArray(res.careers) && res.careers.length > 0) {
 				careers = res.careers;
 			} else {
@@ -44,7 +44,7 @@
 				return;
 			}
 
-			const saveRes = await fetch(`${API.BASE_URL || 'https://backend1-vwd5.onrender.com'}/save-career`, {
+			const saveRes = await fetch(`https://backend1-vwd5.onrender.com/save-career`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -86,9 +86,7 @@
 <div class="container py-5">
 	<!-- Hero Section -->
 	<section class="bg-light rounded-4 shadow-sm p-5 mb-5 text-center">
-		<h1 class="fw-bold display-4 text-gradient mb-3">
-			🚀 Explore Your Career Possibilities
-		</h1>
+		<h1 class="fw-bold display-4 text-gradient mb-3">🚀 Explore Your Career Possibilities</h1>
 		<p class="lead text-secondary">
 			AI-curated paths for <span class="fw-semibold text-dark">dreamers</span>,
 			<span class="fw-semibold text-dark">doers</span>, and
@@ -165,7 +163,10 @@
 							</ul>
 
 							<div class="text-end mt-4">
-								<button class="btn btn-primary rounded-pill px-4 fw-semibold" on:click={() => selectCareer(c)}>
+								<button
+									class="btn btn-primary rounded-pill px-4 fw-semibold"
+									on:click={() => selectCareer(c)}
+								>
 									💾 Save this Career
 								</button>
 							</div>
