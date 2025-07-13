@@ -97,27 +97,12 @@ export async function fetchCareerDetails(title) {
   }
 }
 
-// === Career Paths ===
-export async function fetchCareerPaths() {
-  try {
-    const res = await fetch(`${BASE_URL}/career-paths`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('❌ fetchCareerPaths error:', err);
-    return [];
-  }
-}
-
-// ✅ Default Export: Object containing all API functions
-const API = {
+// ✅ Default export for `import API from '$lib/api'`
+export default {
   fetchAIGuidance,
   fetchAIQuote,
   fetchAICareerGuide,
   fetchAICareers,
-  fetchCareerPaths,
   fetchFailureStories,
   fetchCareerDetails
 };
-
-export default API;
