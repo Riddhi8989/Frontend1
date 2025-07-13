@@ -1,55 +1,98 @@
-import axios from 'axios';
+const BASE_URL = 'https://backend1-vwd5.onrender.com';
 
-const API_BASE = 'https://backend1-vwd5.onrender.com';
+// === AI Guidance (general prompt handling) ===
+export async function fetchAIGuidance(prompt) {
+  try {
+    const res = await fetch(`${BASE_URL}/ai-guidance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: prompt })
+    });
 
-// 🔐 Auth headers
-function getAuthHeaders() {
-	const user = JSON.parse(localStorage.getItem('user'));
-	if (user && user.token) {
-		return {
-			headers: {
-				Authorization: `Bearer ${user.token}`
-			}
-		};
-	}
-	return {};
+    const data = await res.json();
+    return data.result;
+  } catch (err) {
+    console.error('❌ fetchAIGuidance error:', err);
+    return null;
+  }
 }
 
-// 📦 Auth
-export async function login(email, password) {
-	return axios.post(`${API_BASE}/login`, { email, password });
+// === AI Motivational Quote ===
+export async function fetchAIQuote(topic = "failure") {
+  try {
+    const res = await fetch(`${BASE_URL}/ai-quote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic })
+    });
+
+    const data = await res.json();
+    return data.quote;
+  } catch (err) {
+    console.error('❌ fetchAIQuote error:', err);
+    return null;
+  }
 }
 
-export async function register(name, email, password) {
-	return axios.post(`${API_BASE}/register`, { name, email, password });
+// === AI Career Guide ===
+export async function fetchAICareerGuide(prompt) {
+  try {
+    const res = await fetch(`${BASE_URL}/ai-guide`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await res.json();
+    return data.answer;
+  } catch (err) {
+    console.error('❌ fetchAICareerGuide error:', err);
+    return null;
+  }
 }
 
-// 🤖 AI Features
-export async function fetchAiStories() {
-	return axios.get(`${API_BASE}/ai-motivation-feed`);
+// === AI Careers Suggestion ===
+export async function fetchAICareers(keyword = "technology") {
+  try {
+    const res = await fetch(`${BASE_URL}/ai-careers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keyword })
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('❌ fetchAICareers error:', err);
+    return [];
+  }
 }
 
-export async function fetchAiCareers() {
-	return axios.get(`${API_BASE}/ai-careers`);
+// === Failure Stories ===
+export async function fetchFailureStories() {
+  try {
+    const res = await fetch(`${BASE_URL}/stories`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('❌ fetchFailureStories error:', err);
+    return [];
+  }
 }
 
-// 👤 Profile
-export async function fetchProfile(email) {
-	return axios.get(`${API_BASE}/profile`, {
-		params: { email }
-	});
-}
+// === Career Details ===
+export async function fetchCareerDetails(title) {
+  try {
+    const res = await fetch(`${BASE_URL}/career-details`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title })
+    });
 
-export async function putProfile(data) {
-	return axios.put(`${API_BASE}/profile`, data);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('❌ fetchCareerDetails error:', err);
+    return null;
+  }
 }
-
-// ✅ Default export
-export default {
-	login,
-	register,
-	fetchAiStories,
-	fetchAiCareers,
-	fetchProfile,
-	putProfile
-};
