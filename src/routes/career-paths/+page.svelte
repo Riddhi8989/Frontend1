@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { fetchCareerPaths } from '$lib/api.js';
+	import { fetchAICareers } from '$lib/api.js'; // ✅ Named import
 	import { user } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
@@ -21,9 +21,9 @@
 		careers = [];
 
 		try {
-			const data = await fetchCareerPaths(keyword || field);
-			if (Array.isArray(data) && data.length > 0) {
-				careers = data;
+			const res = await fetchAICareers(keyword || field); // ✅ Correct usage
+			if (Array.isArray(res.careers) && res.careers.length > 0) {
+				careers = res.careers;
 			} else {
 				error = 'No valid career suggestions received from AI.';
 			}
@@ -44,11 +44,9 @@
 				return;
 			}
 
-			const res = await fetch('https://backend1-vwd5.onrender.com/save-career', {
+			const saveRes = await fetch(`https://backend1-vwd5.onrender.com/save-career`, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					email: u.email,
 					title: career.title,
@@ -59,11 +57,11 @@
 				})
 			});
 
-			if (res.ok) {
+			if (saveRes.ok) {
 				alert('🎉 Career saved successfully!');
 				goto('/dashboard');
 			} else {
-				throw new Error('Failed to save');
+				alert('❌ Error saving career to your profile.');
 			}
 		} catch (err) {
 			console.error('Save Career Error:', err);
@@ -71,6 +69,9 @@
 		}
 	};
 </script>
+
+<!-- ✨ Template and styling stay the same (as you've done it perfectly) -->
+
 
 <svelte:head>
 	<title>Career Suggestions</title>

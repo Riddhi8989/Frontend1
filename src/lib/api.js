@@ -38,3 +38,18 @@ export async function fetchCareerPaths(keyword) {
 		return [];
 	}
 }
+
+// ✅ This is the function expected in dashboard/+page.svelte
+export async function fetchAICareers(keyword) {
+	try {
+		const res = await fetch(`${BASE_URL}/ai-career?keyword=${encodeURIComponent(keyword)}`);
+		if (!res.ok) throw new Error('AI Career fetch failed');
+		return await res.json();
+	} catch (err) {
+		console.error('AI Career Fetch Error:', err);
+		return { careers: [] }; // Return empty structure for dashboard compatibility
+	}
+}
+
+// Optional: Export BASE_URL if needed elsewhere
+export { BASE_URL };

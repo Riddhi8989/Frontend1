@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { fetchAICareers } from '$lib/api.js'; // ✅ Named import
+	import API from '$lib/api.js'; // ✅ using default import
 	import { user } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
@@ -21,7 +21,7 @@
 		careers = [];
 
 		try {
-			const res = await fetchAICareers(keyword || field); // ✅ Correct usage
+			const res = await API.fetchAICareers(keyword || field); // ✅ consistent call
 			if (Array.isArray(res.careers) && res.careers.length > 0) {
 				careers = res.careers;
 			} else {
@@ -44,7 +44,7 @@
 				return;
 			}
 
-			const saveRes = await fetch(`https://backend1-vwd5.onrender.com/save-career`, {
+			const saveRes = await fetch(`${API.BASE_URL || 'https://backend1-vwd5.onrender.com'}/save-career`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -69,9 +69,6 @@
 		}
 	};
 </script>
-
-<!-- ✨ Template and styling stay the same (as you've done it perfectly) -->
-
 
 <svelte:head>
 	<title>Career Suggestions</title>
