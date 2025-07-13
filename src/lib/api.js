@@ -1,108 +1,40 @@
+// src/lib/api.js
+
 const BASE_URL = 'https://backend1-vwd5.onrender.com';
 
-// === AI Guidance (general prompt handling) ===
-export async function fetchAIGuidance(prompt) {
-  try {
-    const res = await fetch(`${BASE_URL}/ai-guidance`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: prompt })
-    });
-
-    const data = await res.json();
-    return data.result;
-  } catch (err) {
-    console.error('❌ fetchAIGuidance error:', err);
-    return null;
-  }
+export async function signup(data) {
+	const res = await fetch(`${BASE_URL}/signup`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
+	});
+	if (!res.ok) throw new Error('Signup failed');
+	return res.json();
 }
 
-// === AI Motivational Quote ===
-export async function fetchAIQuote(topic = "failure") {
-  try {
-    const res = await fetch(`${BASE_URL}/ai-quote`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic })
-    });
-
-    const data = await res.json();
-    return data.quote;
-  } catch (err) {
-    console.error('❌ fetchAIQuote error:', err);
-    return null;
-  }
+export async function login(data) {
+	const res = await fetch(`${BASE_URL}/login`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
+	});
+	if (!res.ok) throw new Error('Login failed');
+	return res.json();
 }
 
-// === AI Career Guide ===
-export async function fetchAICareerGuide(prompt) {
-  try {
-    const res = await fetch(`${BASE_URL}/ai-guide`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    });
-
-    const data = await res.json();
-    return data.answer;
-  } catch (err) {
-    console.error('❌ fetchAICareerGuide error:', err);
-    return null;
-  }
+export async function fetchUser(email) {
+	const res = await fetch(`${BASE_URL}/user?email=${encodeURIComponent(email)}`);
+	if (!res.ok) throw new Error('User fetch failed');
+	return res.json();
 }
 
-// === AI Careers Suggestion ===
-export async function fetchAICareers(keyword = "technology") {
-  try {
-    const res = await fetch(`${BASE_URL}/ai-careers`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ keyword })
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('❌ fetchAICareers error:', err);
-    return [];
-  }
+export async function fetchCareerPaths(keyword) {
+	try {
+		const res = await fetch(`${BASE_URL}/ai-career?keyword=${encodeURIComponent(keyword)}`);
+		if (!res.ok) throw new Error('Career fetch failed');
+		return await res.json();
+	} catch (err) {
+		console.error('Career API Error:', err);
+		return [];
+	}
 }
-
-// === Failure Stories ===
-export async function fetchFailureStories() {
-  try {
-    const res = await fetch(`${BASE_URL}/stories`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('❌ fetchFailureStories error:', err);
-    return [];
-  }
-}
-
-// === Career Details ===
-export async function fetchCareerDetails(title) {
-  try {
-    const res = await fetch(`${BASE_URL}/career-details`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title })
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('❌ fetchCareerDetails error:', err);
-    return null;
-  }
-}
-
-// ✅ Default export for `import API from '$lib/api'`
-export default {
-  fetchAIGuidance,
-  fetchAIQuote,
-  fetchAICareerGuide,
-  fetchAICareers,
-  fetchFailureStories,
-  fetchCareerDetails
-};
